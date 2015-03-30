@@ -1,0 +1,271 @@
+.esy {
+    font-family: 'Source Sans Pro';
+    font-size: 1em;
+    font-weight: 300;
+}
+.esy p, .esy .p {
+    font-family: 'Source Sans Pro';
+    font-size: 1.8em;
+    font-weight: 300;
+}
+.esy h1, .esy h2, .esy h3, .esy h4, .esy h5, .esy h6,
+.esy .h1, .esy .h2, .esy .h3, .esy .h4, .esy .h5, .esy .h6 {
+    font-family: 'Source Sans Pro';
+    font-weight: 400;
+    margin: 5px 0;
+}
+.esy .margin-above {
+    margin-top: 15px;
+}
+.esy .margin-below {
+    margin-bottom: 15px;
+}
+
+/** This Fixes annoying things with Bootstrap. Just add "esy-fix" in the same class.*/
+
+.esy-fix.row {
+    padding: 0;
+}
+
+.center-fix {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+}
+
+/** Page specific CSS **/
+
+.header {
+    color: #FFFFFF;
+}
+
+.header h3 {
+    font-family: 'Source Sans Pro';
+}
+
+.header .search {
+    max-width: 350px;
+    width: auto;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.header .search .wrap {
+    position: relative;
+}
+
+.header .search input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px 0 1px 1px solid #FFFFFF;
+    color: #FFFFFF;
+    font-size: 1.9em;
+    height: 2.2em;
+    padding-right: 33px;
+}
+
+.header .search button {
+    background: transparent;
+    border: none;
+    color: #FFFFFF;
+    font-size: 1.9em;
+    height: 2.2em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.4;
+    outline: none;
+    transition: opacity linear 0.2s;
+}
+
+.header .search button:hover,
+.header .search button:focus {
+    outline: none;
+    opacity: 0.9;
+}
+
+
+.tags {
+    font-size: 1.6em;
+    font-family: 'Source Sans Pro';
+    padding: 0 30px 0 0;
+}
+
+.tags>h4 {
+    font-family: 'Source Sans Pro';
+    font-weight: 400;
+}
+
+.items>h4 .active {
+    color: #3F9B83;
+}
+
+.items>h4 .inactive {
+    color: #2F2F3B;
+}
+
+.tags>ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tags>ul>li {
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+.tags>ul>li a {
+    color: #2E3F4F;
+}
+
+.tags>ul>li a:hover {
+    color: #3F9B83;
+}
+
+
+.items {
+    font-size: 1.6em;
+}
+
+.items>h4 {
+    font-family: 'Source Sans Pro';
+    font-weight: 400;
+}
+
+.items>ul {
+    list-style: none;
+    padding: 0;
+}
+
+.items>ul>li {
+    border: 1px solid #97A4A6;
+    margin-top: -1px;
+}
+.items>ul>li>.preview {
+    color: #000;
+    font-weight: 400;
+    transition: background 0.2s, color 0.2s;
+    height: 42px;
+    padding: 0 10px 0 15px;
+}
+.items>ul>li>.preview:hover,
+.items>ul>li>.preview.open {
+    border-color: #EBEBEB;
+    background: #EBEBEB;
+    color: #364A5D;
+    cursor: pointer;
+}
+
+.items>ul>li>.preview>div {
+    padding: 10px 0;
+}
+
+.items>ul>li>.preview>div:first-child>p {
+    font-weight: 600;
+    padding: 0 15px 0 0;
+}
+.items>ul>li>.preview>div>p {
+    font-size: 1em;
+    word-wrap: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+.items>ul>li>.preview>div:last-child {
+    text-align: right;
+}
+
+.items>ul>li>.preview>div:last-child i {
+    color: #DC5B48;
+}
+.items>ul>li>.preview>div:last-child i:hover {
+    color: #B74737;
+}
+
+.items>ul>li .title {
+    margin: 0 0 20px 0;
+}
+
+.items>ul>li .btn-open {
+    background: #3682B7;
+    color: #FFFFFF;
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+.items>ul>li .btn-open:hover,
+.items>ul>li .btn-open:focus {
+    outline: none;
+    background: #34485B;
+}
+
+.items>ul>li .btn-close {
+    background: transparent;
+    border-color: transparent;
+    font-size: 1em;
+    padding: 0;
+    width: 20px;
+    color: #34485B;
+    border-radius: 2px;
+    transition: color 0.2s;
+}
+.items>ul>li .btn-close:hover,
+.items>ul>li .btn-close:focus {
+    outline: none;
+    color: #3682B7;
+}
+
+.items>ul>li>.data {
+    font-size: 0.6em;
+    background: #FFF;
+    color: #000;
+    padding: 15px;
+    font-weight:600 !important;
+}
+
+.items>ul>li>.data img {
+    max-width: 100%;
+}
+
+.items>ul>li>.data .sidebar {
+    font-size: 1.4em;
+    line-height: 1.6em;
+}
+
+.items>ul>li>.data .sidebar kbd {
+    background: #3682B7;
+    font-weight: 300;
+}
+
+.items>ul>li>.data .sidebar .likes {
+    font-size: 1.5em;
+    color: #818B8D;
+}
+
+.items>ul>li>.data .sidebar .likes i {
+    font-size: 0.9em;
+    color: #DC5B48;
+    margin: 10px 0;
+}
+
+.items>ul>li>.data .sidebar hr {
+    margin: 10px 0;
+}
+
+.items>ul>li>.data .sidebar .author {
+    font-size: 1em;
+    text-align: center;
+    color: #818B8D;
+}
+
+.items>ul>li>.data .sidebar .author p {
+    font-size: 1em;
+    margin: 0;
+    line-height: 1.1em;
+}
+
+.items>ul>li>.data .sidebar .author p .name {
+    font-weight: 500;
+    color: #2E3F4F;
+}
