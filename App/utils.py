@@ -29,7 +29,7 @@ class Database:
     def state(self):
         return self._state
 
-    @_state.setter
+    #@_state.setter
     def set_state(self, key, value):
         pass
 

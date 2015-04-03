@@ -6,7 +6,11 @@
 
 #user = Blueprint("user", __name__, template_folder = "view")
 
+# Global imports
+import bcrypt
 from hashids import Hashids
+
+# Local imports
 import utils
 
 class Instance:
@@ -86,3 +90,13 @@ class Session:
     def _keygen(self, entropy):
         pass
 
+
+class Password:
+    def get_hashed_password(plain_text_password):
+        # Hash a password for the first time
+        #   (Using bcrypt, the salt is saved into the hash itself)
+        return bcrypt.hashpw(plain_text_password, bcrypt.gensalt())
+
+    def check_password(plain_text_password, hashed_password):
+        # Check hased password. Useing bcrypt, the salt is saved into the hash itself
+        return bcrypt.checkpw(plain_text_password, hashed_password)
