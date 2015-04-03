@@ -29,7 +29,7 @@ class _Utils:
         pass
 
 class User:
-    def __init__(self, mode = "", user_id = None):
+    def __init__(self, mode = "", user_name = None):
         """Initializes the instance as *mode*"""
         pass
 
@@ -49,26 +49,37 @@ class User:
         elif password is not confirm_password:
             return (False, "PasswordNoMatch")
 
-    def delete(self, user_id):
+    def delete(self, user_name):
         """Deletes the User from Database."""
         pass
 
-    def get_user_from_id(self, user_id):
+    def get_user_from_id(self, user_name):
         pass
 
     def get_user_from_user_name():
         pass
 
 class Session:
-    def create(self, user_id):
+    def login(self, user_name, pswd):
+        if not _Utils.user_exists(user_name):
+            return False
+        pass
+
+    def logout(self, session_id, session_key):
+        pass
+
+    def check(self, session_id, session_key):
+        pass
+
+    def _create(self, user_name):
         """Creates a new session for the user."""
         pass
 
-    def verify(self, user_id, session_id, session_key):
+    def _verify(self, user_name, session_id, session_key):
         """Checks the session ID, validity, and integrity."""
         pass
 
-    def delete(self, user_id, session_id = False):
+    def _delete(self, user_name, session_id = False):
         """Deletes the session ID, and logs a log-out event."""
         pass
 
