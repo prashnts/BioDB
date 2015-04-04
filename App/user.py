@@ -8,6 +8,7 @@
 
 # Global imports
 import bcrypt
+import datetime
 from hashids import Hashids
 
 # Local imports
@@ -15,7 +16,7 @@ import utils
 
 class Instance:
     def __init__(self, user_name):
-        self.udb = utils.Database.user
+        self.udb = utils.Database().user
         if _Utils.user_exists(user_name):
             self.user_name = user_name
             user_dat = self.udb.find_one({"user_name": user_name})
@@ -23,35 +24,46 @@ class Instance:
 
 
 class _Utils:
-    def user_exists(self, user_name):
-        return utils.Database.user.find_one({"user_name": user_name})
+    def user_exists(user_name):
+        return utils.Database().user.find_one({"user_name": user_name}) is not None
 
-    def email_exists(self, email_id):
-        return utils.Database.user.find_one({"email_id": email_id})
+    def email_exists(email_id):
+        return utils.Database().user.find_one({"email": email_id})
 
-    def pswd_compare(self, pswd_one, pswd_two):
+    def validate_username(user_name):
         pass
 
-class User:
-    def __init__(self, mode = "", user_name = None):
-        """Initializes the instance as *mode*"""
+    def validate_password(password):
         pass
 
+    def validate_email(email_id):
+        pass
+
+class Manage:
     def add(
-        self,
         user_name,
         password,
         confirm_password,
         email_id):
         """Adds the User into Database."""
-        self.udb = utils.Database.user
-
-        if udb.find_one({"user_name": user_name}):
+        if _Utils.user_exists(user_name):
             return (False, "UsernameExist")
-        elif udb.find_one({"email_id": email_id}):
+        elif _Utils.email_exists(email_id):
             return (False, "EmailExist")
         elif password is not confirm_password:
             return (False, "PasswordNoMatch")
+
+        user = {
+            'user_name': user_name,
+            'pswd': Password.get_hashed_password(password),
+            'email': email_id,
+            'status': 1,
+            'meta': {
+                'added': datetime.datetime.utcnow()
+            }
+        }
+
+        return utils.Database().user.insert_one(user).inserted_id
 
     def delete(self, user_name):
         """Deletes the User from Database."""
@@ -100,3 +112,5 @@ class Password:
     def check_password(plain_text_password, hashed_password):
         # Check hased password. Useing bcrypt, the salt is saved into the hash itself
         return bcrypt.checkpw(plain_text_password, hashed_password)
+
+print(Manage.add("pjraaa", "jaisubaby", "jaisubaby", "pragya.jswl@gmail.com"))
