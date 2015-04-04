@@ -9,6 +9,7 @@
 # Global imports
 import bcrypt
 import datetime
+import re
 from hashids import Hashids
 
 # Local imports
@@ -31,13 +32,18 @@ class _Utils:
         return utils.Database().user.find_one({"email": email_id})
 
     def validate_username(user_name):
-        pass
+        min_len = 3
+        max_len = 32
+
+        pattern = r"^(?i)[a-z0-9_-]{%s,%s}$" %(min_len, max_len)
+        return bool(re.match(pattern, user_name)) == True
 
     def validate_password(password):
-        pass
+        return len(password) > 5
 
     def validate_email(email_id):
-        pass
+        pattern = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+        return bool(re.match(pattern, email_id)) == True
 
 class Manage:
     def add(
@@ -46,33 +52,43 @@ class Manage:
         confirm_password,
         email_id):
         """Adds the User into Database."""
+        errors = []
+
+        if _Utils.validate_username(user_name) is not True:
+            errors.append("BadUserName")
+
+        if _Utils.validate_email(email_id) is not True:
+            errors.append("BadEmailID")
+
+        if _Utils.validate_password(password) is not True:
+            errors.append("ShortPassword")
+
         if _Utils.user_exists(user_name):
-            return (False, "UsernameExist")
-        elif _Utils.email_exists(email_id):
-            return (False, "EmailExist")
-        elif password is not confirm_password:
-            return (False, "PasswordNoMatch")
+            errors.append("UsernameExist")
 
-        user = {
-            'user_name': user_name,
-            'pswd': Password.get_hashed_password(password),
-            'email': email_id,
-            'status': 1,
-            'meta': {
-                'added': datetime.datetime.utcnow()
+        if _Utils.email_exists(email_id):
+            errors.append("EmailExist")
+
+        if password is not confirm_password:
+            errors.append("PasswordNoMatch")
+
+        if len(errors) is not 0:
+            return (False, errors)
+        else:
+            user = {
+                'user_name': user_name,
+                'pswd': Password.get_hashed_password(password),
+                'email': email_id,
+                'status': 1,
+                'meta': {
+                    'added': datetime.datetime.utcnow()
+                }
             }
-        }
 
-        return utils.Database().user.insert_one(user).inserted_id
+            return utils.Database().user.insert_one(user).inserted_id
 
     def delete(self, user_name):
         """Deletes the User from Database."""
-        pass
-
-    def get_user_from_id(self, user_name):
-        pass
-
-    def get_user_from_user_name():
         pass
 
 class Session:
@@ -113,4 +129,4 @@ class Password:
         # Check hased password. Useing bcrypt, the salt is saved into the hash itself
         return bcrypt.checkpw(plain_text_password, hashed_password)
 
-print(Manage.add("pjraaa", "jaisubaby", "jaisubaby", "pragya.jswl@gmail.com"))
+#print(Manage.add("prashant", "para-xylene", "para-xylene", "me@prshnts.in"))
