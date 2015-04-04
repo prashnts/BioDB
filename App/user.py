@@ -15,13 +15,78 @@ from hashids import Hashids
 # Local imports
 import utils
 
-class Instance:
+class Instance(object):
+    """
+    The User Class.
+    """
     def __init__(self, user_name):
+        if _Utils.user_exists(user_name) is False:
+            self.k = False
+            return None
+        self.k = True
         self.udb = utils.Database().user
-        if _Utils.user_exists(user_name):
-            self.user_name = user_name
-            user_dat = self.udb.find_one({"user_name": user_name})
-        pass
+        self._user_dat = self.udb.find_one({"user_name": user_name})
+        self._updates = set()
+
+    @property
+    def email(self):
+        return self._user_dat['email']
+
+    @email.setter
+    def email(self, value):
+        if _Utils.validate_email(value) is True:
+            self._updates.add('email')
+            self._user_dat['email'] = value
+        else:
+            pass
+
+    @property
+    def user_name(self):
+        return self._user_dat['email']
+
+    @property
+    def session(self):
+        return self._user_dat['session'] if 'session' in self._user_dat else {}
+
+    @session.setter
+    def session(self, value):
+        self._updates.add('session')
+        self._user_dat['session'] = value
+
+    @property
+    def pswd(self):
+        return self._user_dat['pswd']
+
+    @pswd.setter
+    def pswd(self, value):
+        if _Utils.validate_password(value) is True:
+            self._updates.add('pswd')
+            self._user_dat['pswd'] = Password.get_hashed_password(value)
+        else:
+            pass
+
+    @property
+    def status(self):
+        return self._status if 'status' in self._user_dat else 0
+
+    @status.setter
+    def status(self, value):
+        if value in [0, 1, 2, 3]:
+            self._updates.add('status')
+            self._user_dat['status'] = value
+        else:
+            pass
+
+    def update(self):
+        for change in self._updates:
+            self.udb.update(
+                {'user_name': self._user_dat['user_name']},
+                {'$set': {change: self._user_dat[change]}},
+                upsert = False,
+                multi = False)
+
+    def __del__(self):
+        self.update();
 
 
 class _Utils:
@@ -34,7 +99,6 @@ class _Utils:
     def validate_username(user_name):
         min_len = 3
         max_len = 32
-
         pattern = r"^(?i)[a-z0-9_-]{%s,%s}$" %(min_len, max_len)
         return bool(re.match(pattern, user_name)) == True
 
@@ -54,13 +118,13 @@ class Manage:
         """Adds the User into Database."""
         errors = []
 
-        if _Utils.validate_username(user_name) is not True:
+        if _Utils.validate_username(user_name) is False:
             errors.append("BadUserName")
 
-        if _Utils.validate_email(email_id) is not True:
+        if _Utils.validate_email(email_id) is False:
             errors.append("BadEmailID")
 
-        if _Utils.validate_password(password) is not True:
+        if _Utils.validate_password(password) is False:
             errors.append("ShortPassword")
 
         if _Utils.user_exists(user_name):
@@ -87,14 +151,16 @@ class Manage:
 
             return utils.Database().user.insert_one(user).inserted_id
 
-    def delete(self, user_name):
+    def delete(user_name):
         """Deletes the User from Database."""
-        pass
+        user = Instance(user_name)
+        if user.k is True:
+            # 0 is a code for Deleted user.
+            user.status = 0
 
 class Session:
     def login(self, user_name, pswd):
-        if not _Utils.user_exists(user_name):
-            return False
+
         pass
 
     def logout(self, session_id, session_key):
@@ -118,7 +184,6 @@ class Session:
     def _keygen(self, entropy):
         pass
 
-
 class Password:
     def get_hashed_password(plain_text_password):
         # Hash a password for the first time
@@ -126,7 +191,9 @@ class Password:
         return bcrypt.hashpw(plain_text_password, bcrypt.gensalt())
 
     def check_password(plain_text_password, hashed_password):
-        # Check hased password. Useing bcrypt, the salt is saved into the hash itself
+        # Check hashed password. Using bcrypt, the salt is saved into the hash itself
         return bcrypt.checkpw(plain_text_password, hashed_password)
 
 #print(Manage.add("prashant", "para-xylene", "para-xylene", "me@prshnts.in"))
+ps = Instance("prashant")
+ps.status = 3
