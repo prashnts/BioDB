@@ -10,6 +10,7 @@
 import bcrypt
 import datetime
 import re
+import uuid
 from hashids import Hashids
 
 # Local imports
@@ -27,6 +28,7 @@ class Instance(object):
         self.udb = utils.Database().user
         self._user_dat = self.udb.find_one({"user_name": user_name})
         self._updates = set()
+        print(Hashids().encode(int(str(self._user_dat['_id']), 16)))
 
     @property
     def email(self):
@@ -159,8 +161,17 @@ class Manage:
             user.status = 0
 
 class Session:
-    def login(self, user_name, pswd):
-
+    def login(user_name, pswd):
+        user = Instance(user_name)
+        if user.k is True:
+            if Password.check_password(pswd, user.pswd) is True:
+                # create a session
+                #session_id = 
+                pass
+            else:
+                print("NAY")
+        else:
+            return (False, False)
         pass
 
     def logout(self, session_id, session_key):
@@ -195,5 +206,4 @@ class Password:
         return bcrypt.checkpw(plain_text_password, hashed_password)
 
 #print(Manage.add("prashant", "para-xylene", "para-xylene", "me@prshnts.in"))
-ps = Instance("prashant")
-ps.status = 3
+Session.login('prashant', "para-xylene")
