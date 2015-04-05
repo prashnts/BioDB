@@ -13,6 +13,8 @@ import re
 import uuid
 import codecs
 from hashids import Hashids
+from functools import wraps
+from flask import request, jsonify
 
 # Local imports
 import utils
@@ -245,7 +247,6 @@ class Session(object):
                 return True
         return False
 
-
     def check(session_id, session_key):
         """
         Checks if the session exists, and is alive.
@@ -253,11 +254,10 @@ class Session(object):
         user_name = codecs.encode(session_id, "rot-13")
         user = Instance(user_name)
         return all([
-            user.k is True,
             session_key in user.session,
             'alive' in user.session[session_key],
             user.session[session_key]['alive'] is True,
-        ])
+        ]) if user.k is True else False
 
 class Password(object):
     """
@@ -272,3 +272,34 @@ class Password(object):
     def check_password(plain_text_password, hashed_password):
         # Check hashed password. Using bcrypt, the salt is saved into the hash itself
         return bcrypt.checkpw(plain_text_password, hashed_password)
+
+def logged_in(f):
+    @wraps(f)
+    def decoration(*args, **kwargs):
+        if Session.check(
+                request.headers.get("user_id", ""),
+                request.headers.get("user_key", "")
+            ) is True:
+            return f(*args, **kwargs)
+        else:
+            response = {
+                'error': True,
+                'message': 'Login Required'
+            }
+            return jsonify(response), 401
+    return decoration
+
+def owns_token(hotdog):
+    def decorator(fn):
+        def wrapped_function(*args, **kwargs):
+            # First check if user is authenticated.
+            if not logged_in():
+                return redirect(url_for('login'))
+            # For authorization error it is better to return status code 403
+            # and handle it in errorhandler separately, because the user could
+            # be already authenticated, but lack the privileges.
+            if not authorizeowner(hotdog):
+                abort(403)
+            return fn(*args, **kwargs)
+        return update_wrapper(wrapped_function, fn)
+    return decorator

@@ -6,4 +6,4 @@ app = Flask(__name__)
 app.register_blueprint(usr, url_prefix = '/usr')
 
 if __name__ == "__main__":
-    app.run(host = config['HOST'], port = config['PORT'])
+    app.run(host = config['HOST'], port = config['PORT'], debug = config['DEBUG'])

@@ -4,6 +4,7 @@
 
 from pymongo import MongoClient
 from config import config
+from flask import jsonify
 
 class Database:
     """
@@ -24,4 +25,3 @@ class Database:
         Returns the User Database collection
         """
         return self.db['user']
-
