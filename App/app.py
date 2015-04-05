@@ -1,26 +1,9 @@
-#!/env/bin python3
+from flask import Flask
+from user import usr
+from config import config
 
-import flask
+app = Flask(__name__)
+app.register_blueprint(usr, url_prefix = '/usr')
 
-app.route("/", )
-
-@route("/")
-def init():
-    return "Index Page"
-
-@route("/login/:destination")
-def login(destination):
-    if destination == "admin":
-        # intit admin login
-    elif destination == "user":
-        # inti user login
-    else:
-        # throw error
-
-@get("/database/add")
-def show_db_addition_interface():
-    return False
-
-@post("database/add")
-def add_into_database():
-    return False
+if __name__ == "__main__":
+    app.run(host = config['HOST'], port = config['PORT'])

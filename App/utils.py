@@ -25,11 +25,3 @@ class Database:
         """
         return self.db['user']
 
-    @property
-    def state(self):
-        return self._state
-
-    #@_state.setter
-    def set_state(self, key, value):
-        pass
-
