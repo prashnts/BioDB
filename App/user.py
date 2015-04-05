@@ -11,6 +11,7 @@ import bcrypt
 import datetime
 import re
 import uuid
+import codecs
 from hashids import Hashids
 
 # Local imports
@@ -28,7 +29,6 @@ class Instance(object):
         self.udb = utils.Database().user
         self._user_dat = self.udb.find_one({"user_name": user_name})
         self._updates = set()
-        print(Hashids().encode(int(str(self._user_dat['_id']), 16)))
 
     @property
     def email(self):
@@ -80,16 +80,16 @@ class Instance(object):
             pass
 
     def update(self):
-        for change in self._updates:
-            self.udb.update(
-                {'user_name': self._user_dat['user_name']},
-                {'$set': {change: self._user_dat[change]}},
-                upsert = False,
-                multi = False)
+        if self.k is True:
+            for change in self._updates:
+                self.udb.update(
+                    {'user_name': self._user_dat['user_name']},
+                    {'$set': {change: self._user_dat[change]}},
+                    upsert = False,
+                    multi = False)
 
     def __del__(self):
         self.update();
-
 
 class _Utils:
     def user_exists(user_name):
@@ -166,34 +166,39 @@ class Session:
         if user.k is True:
             if Password.check_password(pswd, user.pswd) is True:
                 # create a session
-                #session_id = 
-                pass
-            else:
-                print("NAY")
-        else:
-            return (False, False)
-        pass
+                session_id = codecs.encode(user_name, "rot-13")
+                session_key = Hashids().encode(int(uuid.uuid4()))
+                prev_session = user.session
+                prev_session[session_key] = {
+                    'start': datetime.datetime.utcnow(),
+                    'alive': True
+                }
+                user.session = prev_session
+                return (True, session_id, session_key)
 
-    def logout(self, session_id, session_key):
-        pass
+        return (False, None, None)
 
-    def check(self, session_id, session_key):
-        pass
+    def logout(session_id, session_key):
+        user_name = codecs.encode(session_id, "rot-13")
+        user = Instance(user_name)
+        if user.k is True:
+            prev_session = user.session
+            if (session_key in prev_session and
+                'alive' in prev_session[session_key] and
+                prev_session[session_key]['alive'] is True):
+                prev_session[session_key]['alive'] = False
+                user.session = prev_session
+                return True
+        return False
 
-    def _create(self, user_name):
-        """Creates a new session for the user."""
-        pass
 
-    def _verify(self, user_name, session_id, session_key):
-        """Checks the session ID, validity, and integrity."""
-        pass
-
-    def _delete(self, user_name, session_id = False):
-        """Deletes the session ID, and logs a log-out event."""
-        pass
-
-    def _keygen(self, entropy):
-        pass
+    def check(session_id, session_key):
+        user_name = codecs.encode(session_id, "rot-13")
+        user = Instance(user_name)
+        return (user.k is True and
+                session_key in user.session and
+                'alive' in user.session[session_key] and
+                user.session[session_key]['alive'] is True)
 
 class Password:
     def get_hashed_password(plain_text_password):
@@ -204,6 +209,3 @@ class Password:
     def check_password(plain_text_password, hashed_password):
         # Check hashed password. Using bcrypt, the salt is saved into the hash itself
         return bcrypt.checkpw(plain_text_password, hashed_password)
-
-#print(Manage.add("prashant", "para-xylene", "para-xylene", "me@prshnts.in"))
-Session.login('prashant', "para-xylene")

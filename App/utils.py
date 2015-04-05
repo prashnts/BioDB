@@ -33,4 +33,3 @@ class Database:
     def set_state(self, key, value):
         pass
 
-    
