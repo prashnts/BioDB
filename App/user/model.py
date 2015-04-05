@@ -12,6 +12,7 @@ import datetime
 import re
 import uuid
 import codecs
+import json
 from hashids import Hashids
 from functools import wraps
 from flask import request, jsonify
@@ -137,6 +138,10 @@ class _Utils(object):
         """
         Validates the username criteria of [3, 32] length, alphanumeric, {+, _, -}.
         """
+        with open('./user/blacklist.json') as minion:    
+            data = json.load(minion)
+            if user_name in data:
+                return False
         min_len = 3
         max_len = 32
         pattern = r"^(?i)[a-z0-9_-]{%s,%s}$" %(min_len, max_len)
@@ -179,7 +184,7 @@ class Manage(object):
         if _Utils.email_exists(email_id):
             errors.append("EmailExist")
 
-        if password is not confirm_password:
+        if password != confirm_password:
             errors.append("PasswordNoMatch")
 
         if len(errors) is not 0:
@@ -195,7 +200,9 @@ class Manage(object):
                 }
             }
 
-            return utils.Database().user.insert_one(user).inserted_id
+            utils.Database().user.insert_one(user).inserted_id
+
+            return (True, )
 
     def delete(user_name):
         """Deletes the User from Database."""
@@ -259,6 +266,9 @@ class Session(object):
             user.session[session_key]['alive'] is True,
         ]) if user.k is True else False
 
+class Authorized(object):
+    pass
+
 class Password(object):
     """
     Exposes bcrypt hashes of the password.
@@ -273,7 +283,7 @@ class Password(object):
         # Check hashed password. Using bcrypt, the salt is saved into the hash itself
         return bcrypt.checkpw(plain_text_password, hashed_password)
 
-def logged_in(f):
+def must_login(f):
     @wraps(f)
     def decoration(*args, **kwargs):
         if Session.check(
@@ -287,6 +297,22 @@ def logged_in(f):
                 'message': 'Login Required'
             }
             return jsonify(response), 401
+    return decoration
+
+def must_not_login(f):
+    @wraps(f)
+    def decoration(*args, **kwargs):
+        if Session.check(
+                request.headers.get("user_id", ""),
+                request.headers.get("user_key", "")
+            ) is True:
+            response = {
+                'error': True,
+                'message': 'Should Not be Logged In'
+            }
+            return jsonify(response), 401
+        else:
+            return f(*args, **kwargs)
     return decoration
 
 def owns_token(hotdog):

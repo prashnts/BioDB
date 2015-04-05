@@ -9,11 +9,11 @@ from . import model as user_model
 usr = Blueprint('usr', __name__, template_folder='templates')
 
 @usr.route('/')
-@user_model.logged_in
 def get():
     return "Test"
 
 @usr.route('/login', methods = ['POST'])
+@user_model.must_not_login
 def login():
     if all([
         'user_name' in request.form,
@@ -45,6 +45,54 @@ def login():
     return jsonify(response), 400
 
 @usr.route('/logout', methods = ['GET'])
-@user_model.logged_in
+@user_model.must_login
 def logout():
-    return "done"
+    res = user_model.Session.logout(
+        request.headers.get("user_id", ""),
+        request.headers.get("user_key", "")
+    )
+    if res is True:
+        response = {
+            'error': False
+        }
+        return jsonify(response), 200
+    else:
+        response = {
+            'error': True,
+            'message': "Session Error, or already logged out."
+        }
+        return jsonify(response), 401
+
+@usr.route('/signup', methods = ['POST'])
+@user_model.must_not_login
+def signup():
+    if all([
+        'user_name' in request.form,
+        'password'  in request.form,
+        'confirm_password' in request.form,
+        'email_id'  in request.form
+    ]):
+        res = user_model.Manage.add(
+            request.form['user_name'],
+            request.form['password'],
+            request.form['confirm_password'],
+            request.form['email_id'],
+        )
+        if res[0] is True:
+            response = {
+                'error': False,
+                'next': "Confirm Email."
+            }
+            return jsonify(response), 200
+        else:
+            response = {
+                'error': True,
+                'errors': res[1]
+            }
+            return jsonify(response), 400
+
+    response = {
+        'error': True,
+        'message': "Missing `user_name` | `password` | `confirm_password` | `email_id`"
+    }
+    return jsonify(response), 400
