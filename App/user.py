@@ -91,7 +91,7 @@ class Instance(object):
     def __del__(self):
         self.update();
 
-class _Utils:
+class _Utils(object):
     def user_exists(user_name):
         return utils.Database().user.find_one({"user_name": user_name}) is not None
 
@@ -111,7 +111,7 @@ class _Utils:
         pattern = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
         return bool(re.match(pattern, email_id)) == True
 
-class Manage:
+class Manage(object):
     def add(
         user_name,
         password,
@@ -160,7 +160,7 @@ class Manage:
             # 0 is a code for Deleted user.
             user.status = 0
 
-class Session:
+class Session(object):
     def login(user_name, pswd):
         user = Instance(user_name)
         if user.k is True:
@@ -183,9 +183,11 @@ class Session:
         user = Instance(user_name)
         if user.k is True:
             prev_session = user.session
-            if (session_key in prev_session and
-                'alive' in prev_session[session_key] and
-                prev_session[session_key]['alive'] is True):
+            if all([
+                session_key in prev_session,
+                'alive' in prev_session[session_key],
+                prev_session[session_key]['alive'] is True,
+            ]):
                 prev_session[session_key]['alive'] = False
                 user.session = prev_session
                 return True
@@ -195,12 +197,14 @@ class Session:
     def check(session_id, session_key):
         user_name = codecs.encode(session_id, "rot-13")
         user = Instance(user_name)
-        return (user.k is True and
-                session_key in user.session and
-                'alive' in user.session[session_key] and
-                user.session[session_key]['alive'] is True)
+        return all([
+            user.k is True,
+            session_key in user.session,
+            'alive' in user.session[session_key],
+            user.session[session_key]['alive'] is True,
+        ])
 
-class Password:
+class Password(object):
     def get_hashed_password(plain_text_password):
         # Hash a password for the first time
         #   (Using bcrypt, the salt is saved into the hash itself)
