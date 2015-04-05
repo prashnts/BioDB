@@ -19,9 +19,21 @@ import utils
 
 class Instance(object):
     """
-    The User Class.
+    The User Instance. An instance is an object of user properties that exposes
+    the associated informations about the user.
+    Associated Properties-
+    - email -> string (setter allowed) The email of the user.
+    - user_name -> string The User Name of the user.
+    - session -> hash (setter allowed) The session hash - contains various session information.
+    - pswd -> bcrypt string (setter allowed) The password.
+    - status -> int (setter allowed) The user account status.
     """
+
     def __init__(self, user_name):
+        """
+        Initializes the Instance Object. Its status should be checked through the
+        property `k`.
+        """
         if _Utils.user_exists(user_name) is False:
             self.k = False
             return None
@@ -32,10 +44,12 @@ class Instance(object):
 
     @property
     def email(self):
+        """Gets the user email id."""
         return self._user_dat['email']
 
     @email.setter
     def email(self, value):
+        """Sets the user email id."""
         if _Utils.validate_email(value) is True:
             self._updates.add('email')
             self._user_dat['email'] = value
@@ -44,23 +58,28 @@ class Instance(object):
 
     @property
     def user_name(self):
+        """Gets the user name."""
         return self._user_dat['email']
 
     @property
     def session(self):
+        """Gets the session information."""
         return self._user_dat['session'] if 'session' in self._user_dat else {}
 
     @session.setter
     def session(self, value):
+        """Updates the session information."""
         self._updates.add('session')
         self._user_dat['session'] = value
 
     @property
     def pswd(self):
+        """Gets the user password."""
         return self._user_dat['pswd']
 
     @pswd.setter
     def pswd(self, value):
+        """Sets the user password."""
         if _Utils.validate_password(value) is True:
             self._updates.add('pswd')
             self._user_dat['pswd'] = Password.get_hashed_password(value)
@@ -69,10 +88,12 @@ class Instance(object):
 
     @property
     def status(self):
+        """Gets the account status."""
         return self._status if 'status' in self._user_dat else 0
 
     @status.setter
     def status(self, value):
+        """Sets the account status."""
         if value in [0, 1, 2, 3]:
             self._updates.add('status')
             self._user_dat['status'] = value
@@ -80,6 +101,7 @@ class Instance(object):
             pass
 
     def update(self):
+        """Updates the DB with changes made to the User Instance."""
         if self.k is True:
             for change in self._updates:
                 self.udb.update(
@@ -89,34 +111,54 @@ class Instance(object):
                     multi = False)
 
     def __del__(self):
+        """Called when instance object moves out of scope."""
         self.update();
 
 class _Utils(object):
+    """
+    User Management Utilities. Leverages repeated functions.
+    """
+
     def user_exists(user_name):
+        """
+        Checks if the User exists in Database.
+        """
         return utils.Database().user.find_one({"user_name": user_name}) is not None
 
     def email_exists(email_id):
+        """
+        Checks if the Email exists in Database.
+        """
         return utils.Database().user.find_one({"email": email_id})
 
     def validate_username(user_name):
+        """
+        Validates the username criteria of [3, 32] length, alphanumeric, {+, _, -}.
+        """
         min_len = 3
         max_len = 32
         pattern = r"^(?i)[a-z0-9_-]{%s,%s}$" %(min_len, max_len)
         return bool(re.match(pattern, user_name)) == True
 
     def validate_password(password):
+        """
+        Validates the password criteria of its length > 5.
+        """
         return len(password) > 5
 
     def validate_email(email_id):
+        """
+        Validates the email id.
+        """
         pattern = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
         return bool(re.match(pattern, email_id)) == True
 
 class Manage(object):
-    def add(
-        user_name,
-        password,
-        confirm_password,
-        email_id):
+    """
+    Leverages user management functions.
+    """
+
+    def add(user_name, password, confirm_password, email_id):
         """Adds the User into Database."""
         errors = []
 
@@ -161,7 +203,14 @@ class Manage(object):
             user.status = 0
 
 class Session(object):
+    """
+    Manages the User Session and exposes Login, Verify and Logout methods.
+    """
+
     def login(user_name, pswd):
+        """
+        Logs in the user, and returns the Session Identification Information.
+        """
         user = Instance(user_name)
         if user.k is True:
             if Password.check_password(pswd, user.pswd) is True:
@@ -179,6 +228,9 @@ class Session(object):
         return (False, None, None)
 
     def logout(session_id, session_key):
+        """
+        Marks the existing session as inactive.
+        """
         user_name = codecs.encode(session_id, "rot-13")
         user = Instance(user_name)
         if user.k is True:
@@ -195,6 +247,9 @@ class Session(object):
 
 
     def check(session_id, session_key):
+        """
+        Checks if the session exists, and is alive.
+        """
         user_name = codecs.encode(session_id, "rot-13")
         user = Instance(user_name)
         return all([
@@ -205,6 +260,10 @@ class Session(object):
         ])
 
 class Password(object):
+    """
+    Exposes bcrypt hashes of the password.
+    """
+
     def get_hashed_password(plain_text_password):
         # Hash a password for the first time
         #   (Using bcrypt, the salt is saved into the hash itself)
