@@ -5,13 +5,14 @@
 from pymongo import MongoClient
 from config import config
 from flask import jsonify
+import json
 
 class Database:
     """
     This class gets the database instance, and exposes the collections.
     """
 
-    def __init__(self, uri = False):
+    def __init__(self, uri = False):        
         if type(uri) is str:
             self.client = MongoClient(uri)
         else:
@@ -26,7 +27,3 @@ class Database:
         """
         return self.db['user']
 
-    @property
-    def biodb(self):
-        return self.db['biodb']
-    
