@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 #.--. .-. ... .... -. - ... .-.-.- .. -.
 
+from bson.objectid import ObjectId
+
 # Local imports
 import utils
 
@@ -34,10 +36,11 @@ class Software(object):
 
             return utils.Database().biodb.insert_one(sw).inserted_id
 
-        return None
+        return False
 
     def delete(software_id):
-        utils.Database().biodb.remove({'_id': software_id}, True)
+        "Deletes a software from Database."
+        return utils.Database().biodb.remove({"_id": ObjectId(software_id)})['n'] > 0
 
     def update(
             software_id,
@@ -52,25 +55,24 @@ class Software(object):
 
         update = {}
 
-        def __update_macro(key, type):
-            val = eval(key)
+        def __update_macro(key, val, _type):
             if all([
                 val is not None,
-                type(val) is str
+                type(val) is _type
             ]):
                 update[key] = val
 
-        __update_macro('software_name', str)
-        __update_macro('primary_link', str)
-        __update_macro('one_liner', str)
-        __update_macro('paid', bool)
-        __update_macro('primary_ref', str)
-        __update_macro('remarks', str)
-        __update_macro('meta', dict)
+        __update_macro('software_name', software_name, str)
+        __update_macro('primary_link', primary_link, str)
+        __update_macro('one_liner', one_liner, str)
+        __update_macro('paid', paid, bool)
+        __update_macro('primary_ref', primary_ref, str)
+        __update_macro('remarks', remarks, str)
+        __update_macro('meta', meta, dict)
 
         if len(update) is not 0:
             utils.Database().biodb.update(
-                {'software_id': software_id},
+                {'_id': ObjectId(software_id)},
                 {'$set': update},
                 upsert = False,
                 multi = False
