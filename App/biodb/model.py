@@ -7,8 +7,6 @@ import utils
 
 class Software(object):
     def add(software_name, tags, primary_link, one_liner, paid, primary_ref, remarks, meta = None):
-        bdb = utils.Database().biodb
-
         if all([
             type(software_name) is str,
             type(tags) is list,
@@ -19,13 +17,23 @@ class Software(object):
             type(remarks) is str,
             type(meta) is dict or meta is None
         ]):
-            pass
-        else:
-            return None
-        pass
+            sw = {
+                "software_name": software_name,
+                "tags": tags,
+                "primary_link": primary_link,
+                "one_liner": one_liner,
+                "paid": paid,
+                "primary_ref": primary_ref,
+                "remarks": remarks,
+                "meta": meta
+            }
+
+            return utils.Database().biodb.insert_one(sw).inserted_id
+
+        return None
 
     def delete(software_id):
-        pass
+        utils.Database().biodb.remove({'_id': software_id}, True)
 
     def update(
             software_id,
