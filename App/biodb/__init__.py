@@ -6,8 +6,8 @@ from flask import Flask, Blueprint, render_template, request, jsonify
 
 from user import model as user_model
 
-db = Blueprint('db', __name__, template_folder='templates')
+biodb = Blueprint('biodb', __name__, template_folder='templates')
 
-@db.route('/')
+@biodb.route('/')
 def get():
     return "Test"

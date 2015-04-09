@@ -1,5 +1,6 @@
 from flask import Flask
 from user import usr
+from biodb import biodb
 from config import config
 
 app = Flask(__name__)

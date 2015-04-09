@@ -6,7 +6,11 @@
 import utils
 
 class Software(object):
-    def add(software_name, tags, primary_link, one_liner, paid, primary_ref, remarks, meta = None):
+    def add(software_name, tags, primary_link, one_liner, paid, primary_ref = "N.A", remarks = "N.A", meta = None):
+        """
+        Adds the software into the Database. Any additional properties should
+        only be added into `meta`.
+        """
         if all([
             type(software_name) is str,
             type(tags) is list,
