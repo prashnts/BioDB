@@ -25,3 +25,8 @@ class Database:
         Returns the User Database collection
         """
         return self.db['user']
+
+    @property
+    def biodb(self):
+        return self.db['biodb']
+    

@@ -2,10 +2,6 @@
 # -*- coding: utf-8 -*-
 #.--. .-. ... .... -. - ... .-.-.- .. -.
 
-#from flask import Flask, Blueprint, render_template
-
-#user = Blueprint("user", __name__, template_folder = "view")
-
 # Global imports
 import bcrypt
 import datetime
