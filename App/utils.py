@@ -27,3 +27,10 @@ class Database:
         """
         return self.db['user']
 
+    @property
+    def biodb(self):
+        """
+        Returns the biodb Database collection
+        """
+        return self.db['biodb']
+
