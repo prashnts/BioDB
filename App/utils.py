@@ -27,7 +27,3 @@ class Database:
         """
         return self.db['user']
 
-    def insertSW(self, software):
-        coll = self.db.list
-        coll.insert(software).inserted_id
-
