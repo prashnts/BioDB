@@ -68,12 +68,12 @@
 
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('img/about-bg.jpg')">
+    <header class="intro-header" style="background-color: gray">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="page-heading">
-                        <h1>Submit a new </h1>
+                        <h1>Submit another.</h1>
                         <hr class="small">
                     </div>
                 </div>
@@ -87,20 +87,41 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <form id="submitForm" action="" method="post">
                 <div class="row">
-                    <input id="name" type="text" name="name" required="required" placeholder="Software/Database Name" class="form-control">
+                    <input id="software_name" type="text" name="software_name" required="required" placeholder="Software/Database Name" class="form-control">
                 </div>
                 <br />
                 <div class="row">
-                    <input id="url" type="text" name="url" required="required" placeholder="Software/Database Website" class="form-control">
+                    <input id="primary_link" type="text" name="primary_link" required="required" placeholder="Software/Database Website" class="form-control">
                 </div>
                 <br />
                 <div class="row">
-                    <select id="license" name="license" required="required" class="form-control">
+                    <select id="paid" name="paid" required="required" class="form-control">
                         <option value="" default selected>Select License</option>
                         <option value="F">Freeware</option>
                         <option value="D">Trial</option>
                         <option value="P">Paid</option>
                     </select>
+                </div>
+                <br />
+                <div class="row">
+                    <p>
+                        Describe a little about the software: 
+                    </p>
+                    <textarea id="one_liner" name="one_liner" class="form-control">
+                        
+                    </textarea>
+                </div>
+                <br />
+                <div class="row">
+                    <input type="text" id="tags" name="tags" class="form-control" placeholder="add one or more comma seperated tags. ex - dna, rna, translation, etc">
+                </div>
+                <br />
+                <div class="row">
+                    <input id="primary_ref" name="primary_ref" type="text" class="form-control" placeholder="Any references, journal, etc.">
+                </div>
+                <br />
+                <div class="row">
+                    <input id="remarks" name="remarks" type="text" class="form-control" placeholder="Something special...">
                 </div>
                 <hr />
                 <div class="row">
@@ -161,11 +182,27 @@
     <!-- <script src="../../js/clean-blog.min.js"></script> -->
 
     <script type="text/javascript">
+
+        responseObj = {};
         function submitForm () {
-            // body...
+            // Converting form data into a JSON Object.
             data = $('#submitForm').serializeObject();
+
+            // Fine tuning JSON data
+            if (data.primary_ref=='') 
+                data.primary_ref='NA';
+
+            if (data.one_liner=='')
+                data.one_liner='NA';
+
+            if (data.remarks=='')
+                data.remarks='NA';
+
+            data['tags']=data['tags'].replace(/,/g,';');
+
             console.log(data);
-            jQuery.post("http://localhost:60/submit", data, submissionSuccess);
+            
+            jQuery.post("http://localhost:60/db/add", data, submissionSuccess, 'json');
         }
 
         $.fn.serializeObject = function()
@@ -188,7 +225,7 @@
         function submissionSuccess () {
             // body...
             alert("Software added successfully!!!");
-            console.log("Software added successfully!!!");
+            console.log(data);
         }
         
     </script>
