@@ -2,12 +2,72 @@
 # -*- coding: utf-8 -*-
 #.--. .-. ... .... -. - ... .-.-.- .. -.
 
+# Global imports
 from bson.objectid import ObjectId
 
 # Local imports
 import utils
 
 class Software(object):
+    def __init__(self, sw_id):
+        inst = utils.Database().biodb.find_one({"_id": ObjectId(sw_id)})
+        self.k = False
+
+        if inst is not None:
+            self.k = True
+            self._meta = inst
+
+    @property
+    def oid(self):
+        return str(self._meta['_id']) if self.k is True else 0x000000000000000000000000
+
+    @property
+    def name(self):
+        return self._meta['software_name'] if self.k is True else None
+
+    @property
+    def tags(self):
+        return self._meta['tags'] if self.k is True else None
+
+    @property
+    def link(self):
+        return self._meta['primary_link'] if self.k is True else None
+
+    @property
+    def one_liner(self):
+        return self._meta['one_liner'] if self.k is True else None
+
+    @property
+    def paid(self):
+        return self._meta['paid'] if self.k is True else None
+
+    @property
+    def ref(self):
+        return self._meta['primary_ref'] if self.k is True else None
+
+    @property
+    def remarks(self):
+        return self._meta['remarks'] if self.k is True else None
+
+    @property
+    def meta(self):
+        return self._meta['meta'] if self.k is True else None
+
+    @property
+    def hash(self):
+        return {
+            "oid": self.oid,
+            "software_name": self.name,
+            "tags": self.tags,
+            "primary_link": self.link,
+            "one_liner": self.one_liner,
+            "paid": self.paid,
+            "primary_ref": self.ref,
+            "remarks": self.remarks,
+            "meta": self.meta
+        }
+
+class Manage(object):
     def add(software_name, tags, primary_link, one_liner, paid, primary_ref = "N.A", remarks = "N.A", meta = None):
         """
         Adds the software into the Database. Any additional properties should
@@ -43,14 +103,14 @@ class Software(object):
         return utils.Database().biodb.remove({"_id": ObjectId(software_id)})['n'] > 0
 
     def update(
-            software_id,
-            software_name = None,
-            primary_link = None,
-            one_liner = None,
-            paid = None,
-            primary_ref = None,
-            remarks = None,
-            meta = None
+        software_id,
+        software_name = None,
+        primary_link = None,
+        one_liner = None,
+        paid = None,
+        primary_ref = None,
+        remarks = None,
+        meta = None
         ):
 
         update = {}

@@ -5,6 +5,7 @@
 from pymongo import MongoClient
 from config import config
 from flask import jsonify
+from bson.objectid import ObjectId
 import json
 
 class Database:
@@ -34,3 +35,9 @@ class Database:
         """
         return self.db['biodb']
 
+def validate_oid(func):
+    def wrapper(oid, *args, **kwargs):
+        if ObjectId.is_valid(oid):
+            return func(oid, *args, **kwargs)
+        return jsonify({'errors': True, 'msg': "Invalid OID"}), 400
+    return wrapper

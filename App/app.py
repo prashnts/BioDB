@@ -5,6 +5,7 @@ from config import config
 
 app = Flask(__name__)
 app.register_blueprint(usr, url_prefix = '/usr')
+app.register_blueprint(biodb, url_prefix = '/db')
 
 @app.route('/add')
 def index():
