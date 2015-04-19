@@ -79,14 +79,14 @@ class Manage(object):
         Adds the software into the Database. Any additional properties should
         only be added into `meta`.
         """
-        print(type(software_name) )
-        print(type(tags) )
-        print(type(primary_link) )
-        print(type(one_liner) )
-        print(type(paid) )
-        print(type(primary_ref))
-        print(type(remarks))
-        print(type(meta))
+        print(type(software_name),software_name)
+        print(type(tags),tags)
+        print(type(primary_link),primary_link )
+        print(type(one_liner),one_liner)
+        print(type(paid),paid )
+        print(type(primary_ref),primary_ref)
+        print(type(remarks),remarks)
+        print(type(meta),meta)
         if all([
             type(software_name) is str,
             type(tags) is list,
