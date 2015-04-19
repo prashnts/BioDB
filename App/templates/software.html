@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ software_name }}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/clean-blog.css') }}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/esy-frame.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/esy.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/rotating.css') }}">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><img src="{{ url_for('static', filename='img/logo.png') }}" height="25px"></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="post.html">Cluster Innovation Centre</a>
+                    </li>
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="esy-spacer" style="background-image: url('{{ url_for('static', filename='img/hero-background.jpg') }}')">
+        <div class="container">
+            <div class="center-fix header">
+                <h3>The definitive source of the best Biology and Biochemistry Softwares, Services, and Frameworks.</h3>
+                <div class="search">
+                    <div class="wrap">
+                        <input class="form-control" type="text" placeholder="Search">
+                        <button><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 tags">
+                <h4 class="">Tags + Categories</h4>
+                <ul>
+                    <li><a href="#">Protiens</a></li>
+                    <li><a href="#">DNA</a></li>
+                    <li><a href="#">RNA</a></li>
+                    <li><a href="#">Phylogeny</a></li>
+                    <li><a href="#">Databases</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-8 items">
+                
+                <ul>
+                    <li class="row">
+                        <div class="preview open">
+                            <div class="col-sm-3"><p>Software ID: {{ oid }}</p></div>
+                            <div class="col-sm-1">388 <i class="fa fa-heart-o"></i></div>
+                        </div>
+                        <div class="data">
+                            <div class="row padder p-t-null">
+                                <div class="row title">
+                                    <div class="col-lg-8 no-padding">
+                                        <h2>{{ software_name }}</h2>
+                                    </div>
+                                    <div class="col-lg-4 text-right no-padding">
+                                        <h2>
+                                            <a href="{{ primary_link }}" class="btn btn-open">Open the Website</a>
+                                            <a href="#" class="btn btn-close">&times;</a><br>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="row margin-top">
+                                    <div class="col-lg-2 sidebar">
+                                        <div class="row no-margin text-center">
+                                            <img src="{{ url_for('static', filename='img/books-stack-1024.png') }}">
+                                        </div>
+                                        <hr>
+                                        <div class="row no-margin text-center likes">
+                                            <i class="fa fa-heart"></i> 388
+                                        </div>
+                                        <hr>
+                                        <div class="row no-margin text-center">
+                                           	{% for i in tags %}
+												<kbd>{{i}}</kbd>
+											{% endfor %}
+                                        </div>
+                                        <hr>
+                                        <div class="row author">
+                                            <p>Added by <br><span class="name">{{ person }}</span></p>
+                                            <p>on {{ added_date }}</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-10">
+                                    	<p>
+                                    		{{ one_liner }}
+                                    	</p>
+                                    	<p>
+                                    		License: {{ paid }}
+                                    	</p>
+                                    	<p>
+                                    		Additional Remarks: {{ remarks }}
+                                    	</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Footer -->
+    <footer class="container-fluid bg-danger">
+        <div class="container bg-primary">
+            <div class="row">
+                <div class="col-lg-9 img">
+                    <!-- <img src="{{ url_for('static', filename='img/logo/CIC-logo.png') }}"> -->
+                </div>
+                <div class="col-lg-3">
+                    &copy; 2015 Cluster Innovation Centre, University of Delhi
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <!-- <script src="js/clean-blog.min.js"></script> -->
+    <script src="{{ url_for('static', filename='js/revolver.js') }}"></script>
+
+</body>
+</html>

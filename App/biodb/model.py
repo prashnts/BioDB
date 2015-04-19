@@ -8,6 +8,7 @@ from bson.objectid import ObjectId
 # Local imports
 import utils
 
+
 class Software(object):
     def __init__(self, sw_id):
         inst = utils.Database().biodb.find_one({"_id": ObjectId(sw_id)})
@@ -54,6 +55,11 @@ class Software(object):
         return self._meta['meta'] if self.k is True else None
 
     @property
+    def person(self):
+        return self._meta['person'] if self.k is True else None
+    
+
+    @property
     def hash(self):
         return {
             "oid": self.oid,
@@ -68,11 +74,19 @@ class Software(object):
         }
 
 class Manage(object):
-    def add(software_name, tags, primary_link, one_liner, paid, primary_ref = "N.A", remarks = "N.A", meta = None):
+    def add(self, software_name, tags, primary_link, one_liner, paid, primary_ref = "N.A", remarks = "N.A", meta = None):
         """
         Adds the software into the Database. Any additional properties should
         only be added into `meta`.
         """
+        print(type(software_name) )
+        print(type(tags) )
+        print(type(primary_link) )
+        print(type(one_liner) )
+        print(type(paid) )
+        print(type(primary_ref))
+        print(type(remarks))
+        print(type(meta))
         if all([
             type(software_name) is str,
             type(tags) is list,
@@ -98,11 +112,15 @@ class Manage(object):
 
         return False
 
-    def delete(software_id):
+    def addJSON(self, swJSON):
+        return utils.Database().biodb.insert_one(swJSON).inserted_id
+
+    def delete(self, software_id):
         "Deletes a software from Database."
         return utils.Database().biodb.remove({"_id": ObjectId(software_id)})['n'] > 0
 
     def update(
+        self,
         software_id,
         software_name = None,
         primary_link = None,
