@@ -8,4 +8,4 @@ app.register_blueprint(usr, url_prefix = '/usr')
 app.register_blueprint(biodb, url_prefix = '/db')
 
 
-print(bio_model.Software.update('5526d93905fe4853e6ac5025', software_name = "LOL", paid = False))
+print(bio_model.Manage().add("YO", ["1","2"], "he","fwzsd",False)) 

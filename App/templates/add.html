@@ -176,67 +176,33 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="static/js/bootstrap.min.js"></script>
 
-    <!-- Custom Theme JavaScript -->
+    <!-- Custom Theme JavaScript [Unused]-->
     <!-- <script src="../../js/clean-blog.min.js"></script> -->
 
     <script type="text/javascript">
-        $('form').submit(false);
+        $('form').submit(false); // Disable auto form submission.
         responseObj = {};
         function submitForm () {
-            // Converting form data into a JSON Object.
-/*            data = $('#submitForm').serializeObject();
-
-            // Fine tuning JSON data
-            if (data.primary_ref=='') 
-                data.primary_ref='NA';
-
-            if (data.one_liner=='')
-                data.one_liner='NA';
-
-            if (data.remarks=='')
-                data.remarks='NA';
-
-            data['tags']=data['tags'].replace(/,/g,';');
-
-            console.log(data);*/
             console.log($("software_name").val());
             $.ajax({
-  url:"http://localhost:60/db/software/add",
-  type:"POST",
-  data: {
-    software_name : $("software_name").val(),
-    primary_link : $("primary_link").val(),
-    primary_ref : $("primary_ref").val(),
-    paid : $("paid").val(),
-    tags : $("tags").val(),
-    remarks : $("remarks").val(),
-    one_liner : $("one_liner").val()
-  }),
-  dataType:"json",
-  success: submissionSuccess
-});
-            // jQuery.post("http://localhost:60/db/software/add", data, submissionSuccess, 'json');
-        }
-
-        $.fn.serializeObject = function()
-        {
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function() {
-                if (o[this.name] !== undefined) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
+                url:"http://localhost:60/db/software/add",
+                type:"POST",
+                contentType: "application/x-www-form-urlencoded"
+                data: {
+                    software_name : $("software_name").val(),
+                    primary_link : $("primary_link").val(),
+                    primary_ref : $("primary_ref").val(),
+                    paid : $("paid").val(),
+                    tags : $("tags").val(),
+                    remarks : $("remarks").val(),
+                    one_liner : $("one_liner").val()
+                }),
+                dataType:"json",
+                success: submissionSuccess
             });
-            return o;
-        };
-
+        }
         function submissionSuccess () {
-            // body...
+            
             alert("Software added successfully!!!");
             console.log(data);
         }

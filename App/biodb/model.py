@@ -79,14 +79,6 @@ class Manage(object):
         Adds the software into the Database. Any additional properties should
         only be added into `meta`.
         """
-        print(type(software_name),software_name)
-        print(type(tags),tags)
-        print(type(primary_link),primary_link )
-        print(type(one_liner),one_liner)
-        print(type(paid),paid )
-        print(type(primary_ref),primary_ref)
-        print(type(remarks),remarks)
-        print(type(meta),meta)
         if all([
             type(software_name) is str,
             type(tags) is list,
@@ -108,12 +100,10 @@ class Manage(object):
                 "meta": meta
             }
 
+            # Add document to collection and return the objectId.
             return utils.Database().biodb.insert_one(sw).inserted_id
 
         return False
-
-    def addJSON(self, swJSON):
-        return utils.Database().biodb.insert_one(swJSON).inserted_id
 
     def delete(self, software_id):
         "Deletes a software from Database."

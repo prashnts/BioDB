@@ -19,18 +19,7 @@ def get():
 
 @biodb.route('/software/add', methods = ['POST'])
 def add():
-    # if 'application/json' in request.headers["Content-Type"]:
-    #     print("MIME type JSON detected!!!")
-    # manSW = biodb_model.Manage()
-    # print('Manage Object Created!!!')
-    # sw = request.form
-    # print('json data extracted!!!')
-    # print(sw.get('software_name', type=str), sw.get('tags', type=str), sw.get('primary_link', type=str), sw.get('one_liner', type=str), sw.get('paid', type=str))
-    # print(sw['software_name'] + sw['tags'] + sw['primary_link'] + sw['one_liner'] + sw['paid'])
-    print("Args: ",request.args)
-    print("HEADERS: ",request.headers)
-    print("DATA: ",request.data)
-    print("FORM: ",request.form)
+    # Get form data as an ImmutableMultiDict.
     sw=request.form
     if biodb_model.Manage().add(sw.get('software_name', type=str), sw.get('tags', type=str).split(','), sw.get('primary_link', type=str), sw.get('one_liner', type=str), True if sw.get('paid', type=str) == 'P' else False):
         response = {
