@@ -15,7 +15,7 @@ biodb = Blueprint('biodb', __name__, template_folder='templates')
 
 @biodb.route('/')
 def get():
-    return "Test"
+    return render_template("pages.html")
 
 @biodb.route('/software/add', methods = ['POST'])
 def add():

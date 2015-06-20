@@ -7,7 +7,7 @@ import json
 
 app = Flask(__name__)
 app.register_blueprint(usr, url_prefix = '/usr')
-app.register_blueprint(biodb, url_prefix = '/db')
+app.register_blueprint(biodb, url_prefix = '/app')
 
 @app.route('/add', methods=['POST','GET'])
 def addPage():
@@ -19,4 +19,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host = config['HOST'], port = config['PORT'])
+    app.run(host = config['HOST'], port = config['PORT'], debug = True)
