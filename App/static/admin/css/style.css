@@ -419,7 +419,7 @@ body.modal-open .chat-window-wrapper {
 .header .search-form {
   display: inline-block;
   float: left;
-  margin-left: 25px !important;
+  /*margin-left: 25px !important;*/
   top: -4.5px;
   position: relative;
 }
