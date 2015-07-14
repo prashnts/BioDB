@@ -28,7 +28,7 @@ class Software(object):
 
     @property
     def tags(self):
-        return self._meta['tags'] if self.k is True else None
+        return self._meta['tags'] if self.k is True else Nonee
 
     @property
     def link(self):
