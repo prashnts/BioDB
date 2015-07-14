@@ -13,6 +13,14 @@ from utils import validate_oid
 
 biodb = Blueprint('biodb', __name__, template_folder='templates')
 
+"""
+REST rotes for the BioDB database proxy.
+Route Prefix: "/s" for Software Entity.
+Route Prefix: "/l" for List Entity.
+
+
+"""
+
 @biodb.route('/')
 def get():
     return render_template("pages.html")
