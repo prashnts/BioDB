@@ -152,3 +152,6 @@ class Manage(object):
 class Feed(object):
     def create(page = 0, tags = None):
         pass
+
+class Search(object):
+    pass
