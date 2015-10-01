@@ -4,9 +4,10 @@ from flask.ext.security import Security, MongoEngineUserDatastore, \
     UserMixin, RoleMixin, login_required
 from flask_admin import Admin
 from flask_admin.contrib.mongoengine import ModelView
+from flask_admin import helpers as admin_helpers
 
 # Create app
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'super-secret'
@@ -48,7 +49,7 @@ def create_user():
 def home():
     return render_template('index.html')
 
-admin = Admin(app, name='microblog', template_mode='bootstrap3')
+admin = Admin(app, name='microblog', template_mode='bootstrap3', base_template='my_master.html', template_folder='templates')
 
 class Software(db.Document):
     name = db.StringField(max_length=40)
@@ -60,13 +61,28 @@ class Tag(db.Document):
     def __unicode__(self):
         return self.name
 
+class File(db.Document):
+    name = db.StringField(max_length=20)
+    data = db.FileField()
 
 class UserView(ModelView):
     column_filters = ['name']
 
     # column_searchable_list = ('name')
 
+@security.context_processor
+def security_context_processor():
+    return dict(
+        admin_base_template=admin.base_template,
+        admin_view=admin.index_view,
+        h=admin_helpers,
+    )
+
 admin.add_view(UserView(Software))
+admin.add_view(ModelView(User))
+admin.add_view(ModelView(Role))
 admin.add_view(ModelView(Tag))
+admin.add_view(ModelView(File))
+
 if __name__ == '__main__':
     app.run()
