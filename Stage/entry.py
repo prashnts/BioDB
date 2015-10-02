@@ -36,7 +36,6 @@ class User(db.Document, UserMixin):
 
 # Setup Flask-Security
 user_datastore = MongoEngineUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
 
 # Create a user to test with
 @app.before_first_request
@@ -49,7 +48,8 @@ def create_user():
 def home():
     return render_template('index.html')
 
-admin = Admin(app, name='microblog', template_mode='bootstrap3', base_template='my_master.html', template_folder='templates')
+admin = Admin(app, name='BioDB Admin', template_mode='bootstrap3', base_template='my_master.html')
+security = Security(app, user_datastore)
 
 class Software(db.Document):
     name = db.StringField(max_length=40)
