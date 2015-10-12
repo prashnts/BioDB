@@ -2,4 +2,4 @@
 # -*- coding: utf-8 -*-
 #.--. .-. ... .... -. - ... .-.-.- .. -.
 
-__all__ = ["controller", "model"]
+__all__ = ["controller",]

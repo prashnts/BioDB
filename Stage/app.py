@@ -37,10 +37,10 @@ class User(db.Document, UserMixin):
 # Setup Flask-Security
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 
-# Create a user to test with
-@app.before_first_request
-def create_user():
-    user_datastore.create_user(email='matt@nobien.net', password='password')
+# # Create a user to test with
+# @app.before_first_request
+# def create_user():
+#     user_datastore.create_user(email='matt@nobien.net', password='password')
 
 # Views
 @app.route('/')
@@ -80,8 +80,8 @@ def security_context_processor():
     )
 
 admin.add_view(UserView(Software))
-admin.add_view(ModelView(User))
-admin.add_view(ModelView(Role))
+# admin.add_view(ModelView(User))
+# admin.add_view(ModelView(Role))
 admin.add_view(ModelView(Tag))
 admin.add_view(ModelView(File))
 
