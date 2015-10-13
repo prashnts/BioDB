@@ -6,14 +6,14 @@ DEBUG                   = True
 SECRET_KEY              = 'super-secret'
 
 # MongoDB Config
-MONGODB_DB              = 'llo'
+MONGODB_DB              = 'qwer'
 MONGODB_HOST            = 'localhost'
 MONGODB_PORT            = 27017
-SECURITY_REGISTERABLE   = True
 
 
 # Flask_Security
 SECURITY_PASSWORD_HASH  = 'pbkdf2_sha512'
-SECURITY_CONFIRMABLE    = True
-SECURITY_RECOVERABLE    = True
 SECURITY_PASSWORD_SALT  = 'SUPER!'
+SECURITY_REGISTERABLE   = True
+SECURITY_CONFIRMABLE    = False
+# SECURITY_RECOVERABLE    = True
