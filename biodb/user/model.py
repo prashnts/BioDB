@@ -5,7 +5,7 @@
 import datetime
 
 from flask.ext.security import UserMixin, RoleMixin
-from biodb.app import db
+from entry import db
 
 class Role(db.Document, RoleMixin):
     #: Fine user permission control.

@@ -5,7 +5,8 @@
 from flask.ext.security import Security, MongoEngineUserDatastore, \
     UserMixin, RoleMixin, login_required, current_user
 
-from biodb.app import app
+from entry import app
+from user.model import User, Role
 
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
