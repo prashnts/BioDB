@@ -13,6 +13,12 @@ from entry import app
 
 admin = Admin(app, name='BioDB Admin', template_mode='bootstrap3', base_template='my_master.html')
 
-admin.add_view(BaseView(User))
+class UserView(BaseView):
+    column_searchable_list = ('username', 'email')
+    excluded_list_columns = ['password', 'added']
+    column_list = ('username', 'email')
+    form_columns = ('username', 'email')
+
+admin.add_view(UserView(User))
 admin.add_view(BaseView(Role))
 
