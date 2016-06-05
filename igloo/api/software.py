@@ -8,7 +8,9 @@ from igloo.model.entities import Software
 
 
 @hug.get('/')
-def get_list(page: hug.types.number=1):
+def get_list(
+    page: hug.types.number=1,
+    q: hug.types.text=None):
   items = Software.select().paginate(page, 10)
   pages_count = math.ceil(Software.select().count() / 10)
 
