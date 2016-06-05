@@ -1,5 +1,6 @@
 # BioDB API
 import peewee
+import datetime
 
 from igloo import db
 
@@ -7,11 +8,10 @@ from igloo import db
 class Software(peewee.Model):
   title = peewee.CharField()
   description = peewee.TextField()
-  url = peewee.CharField()
-  license_type = peewee.CharField()
+  url = peewee.CharField(null=True)
+  license_type = peewee.CharField(null=True)
 
-  added = peewee.DateField()
-  updated = peewee.DateField()
+  added = peewee.DateField(default=datetime.datetime.now)
 
   class Meta:
     database = db
