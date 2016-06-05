@@ -69,4 +69,4 @@ public/
 bower_components/
 
 # Config
-_config.sample.py
+_config.py
