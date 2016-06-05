@@ -16,3 +16,13 @@ class Software(peewee.Model):
   class Meta:
     database = db
 
+  @property
+  def repr(self):
+    return {
+      'id': self.id,
+      'title': self.title,
+      'description': self.description,
+      'url': self.url,
+      'license': self.license_type,
+      'added': str(self.added),
+    }
