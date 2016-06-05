@@ -1,0 +1,12 @@
+/* TEAM */
+  Developer: Prashant Sinha
+  GitHub: @prashnts
+  Website: https://0xc0d3.pw
+  Source: https://github.com/prashnts/biodb
+  From: New Delhi, India
+
+/* THANKS */
+  ...
+
+/* SITE */
+  ...

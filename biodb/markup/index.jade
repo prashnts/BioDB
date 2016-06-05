@@ -1,0 +1,22 @@
+// BioDB
+
+doctype html
+html(lang='en')
+  head
+    title BioDB
+    include ./partials/head.jade
+
+    meta(property='og:title', content='BioDB')
+    meta(property='og:url', content='https://0xc0d3.pw')
+    link(rel='canonical', href='https://0xc0d3.pw')
+    link(rel='stylesheet', type='text/css', href='css/libraries.css')
+    link(rel='stylesheet', type='text/css', href='css/app.css')
+  body
+    h1 BioDB
+    p BioDB
+
+    script(type='text/javascript', src='js/libraries.js')
+    script(type='text/javascript', src='js/app.js')
+    script.
+      var app = require('app');
+      app.init();

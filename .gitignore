@@ -55,3 +55,18 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# NPM packages folder.
+node_modules/
+
+# Brunch folder for temporary files.
+tmp/
+
+# Brunch output folder.
+public/
+
+# Bower stuff.
+bower_components/
+
+# Config
+_config.sample.py
