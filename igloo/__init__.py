@@ -1,5 +1,7 @@
 # BioDB API
 import hug
+import pecan_mount
+import static
 
 import igloo._config as config
 
@@ -13,3 +15,8 @@ def get_root():
   return 'Hello World.'
 
 
+# Get WSGI friendly environment for *both* Static Files and API
+pecan_mount.tree.graft(__hug_wsgi__, '/api')
+pecan_mount.tree.graft(static.Cling(config.static_root), '/')
+
+api = pecan_mount.tree
