@@ -1,1 +1,1 @@
-web: gunicorn igloo.app --log-file -
+web: gunicorn igloo:app --log-file -
