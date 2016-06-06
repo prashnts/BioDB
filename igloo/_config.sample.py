@@ -1,5 +1,5 @@
 # BioDB API
 
 db_name = 'bio.db'
-module_root = '/repository/project/BioDB'
+module_root = '$module_dir'
 static_root = module_root + '/public'

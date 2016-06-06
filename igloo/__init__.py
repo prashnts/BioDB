@@ -12,7 +12,7 @@ db = playhouse.sqlite_ext.SqliteExtDatabase(config.db_name)
 
 @hug.get('/')
 def get_root():
-  return 'Hello World.'
+  return 'Go to /api/docs for docs'
 
 
 from igloo.api import software as api_software
