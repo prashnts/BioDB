@@ -13,16 +13,19 @@ class CardsContainer extends React.Component
     @state =
       events: []
       pageCount: 0
+    @query =
+      page: 1
+      q: undefined
 
   componentDidMount: ->
     @fetchCards()
 
-  fetchCards: (pageno = 1) ->
+  fetchCards: ->
     @setState events: []
     jquery.ajax(
       url: 'api/v1/software'
       method: 'GET'
-      data: page: pageno
+      data: @query
     ).done (dat) =>
       @setState
         events: dat.data
@@ -33,19 +36,29 @@ class CardsContainer extends React.Component
       <Card key={dat.id} dat={dat} />
 
   handlePaginate: (data) =>
-    @fetchCards(data.selected + 1)
+    @query.page = data.selected + 1
+    @fetchCards()
+
+  handleSubmit: (e) =>
+    e.preventDefault()
+    @query =
+      page: 1
+      q: @refs.searchq.value
+    @fetchCards()
 
   render: ->
     <div>
       <section className='brand'>
         <span className='logo'>BioDB</span>
         <div className='search'>
-          <div className='input-group'>
-            <input type='text' className='form-control'/>
-            <span className='input-group-btn'>
-              <button className='btn'>Search</button>
-            </span>
-          </div>
+          <form onSubmit={@handleSubmit}>
+            <div className='input-group'>
+              <input type='text' className='form-control' name='q' ref='searchq'/>
+              <span className='input-group-btn'>
+                <button className='btn' type='submit'>Search</button>
+              </span>
+            </div>
+          </form>
         </div>
       </section>
       <div className='cards'>

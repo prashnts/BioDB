@@ -72,4 +72,4 @@ bower_components/
 _config.py
 
 # Sqlite
-bio.db
+*.db

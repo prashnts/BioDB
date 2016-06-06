@@ -1,5 +1,6 @@
 # BioDB API
 import peewee
+import playhouse.sqlite_ext
 import datetime
 
 from igloo import db
@@ -17,6 +18,15 @@ class Software(peewee.Model):
   class Meta:
     database = db
 
+  def save(self, **kwa):
+    out = super(Software, self).save(**kwa)
+    SoftwareSearch.insert({
+      SoftwareSearch.docid: self.id,
+      SoftwareSearch.title: self.title,
+      SoftwareSearch.description: self.description,
+      }).execute()
+    return out
+
   @property
   def repr(self):
     return {
@@ -28,3 +38,14 @@ class Software(peewee.Model):
       'license': self.license_type,
       'added': str(self.added),
     }
+
+
+class SoftwareSearch(playhouse.sqlite_ext.FTSModel):
+  title = playhouse.sqlite_ext.SearchField()
+  description = playhouse.sqlite_ext.SearchField()
+
+  class Meta:
+    database = db
+    extension_options = {'tokenize': 'porter'}
+
+

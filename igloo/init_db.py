@@ -1,7 +1,7 @@
 import csv
 
 from igloo import db
-from igloo.model.entities import Software
+from igloo.model.entities import Software, SoftwareSearch
 
 def populate_db():
   with open('data/sample.data.csv', 'r') as fl:
@@ -15,6 +15,7 @@ def populate_db():
       item.save()
 
 if __name__ == '__main__':
-  db.drop_tables([Software], safe=True)
+  db.drop_tables([Software, SoftwareSearch], safe=True)
   db.create_tables([Software])
+  SoftwareSearch.create_table()
   populate_db()

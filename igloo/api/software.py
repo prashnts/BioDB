@@ -4,18 +4,30 @@ import math
 import peewee
 import falcon
 
-from igloo.model.entities import Software
+from igloo.model.entities import Software, SoftwareSearch
 
 
 @hug.get('/')
 def get_list(
     page: hug.types.number=1,
     q: hug.types.text=None):
-  items = Software.select().paginate(page, 10)
-  pages_count = math.ceil(Software.select().count() / 10)
+  if q is not None:
+    items = (Software
+        .select()
+        .join(
+            SoftwareSearch,
+            on=(Software.id == SoftwareSearch.docid))
+        .where(SoftwareSearch.match(q))
+        .order_by(SoftwareSearch.bm25())
+      )
+    pages_count = math.ceil(items.count() / 10)
+  else:
+    items = Software.select()
+    pages_count = math.ceil(Software.select().count() / 10)
+  item_page = items.paginate(page, 10)
 
   return {
-    'data': map(lambda x: x.repr, items),
+    'data': map(lambda x: x.repr, item_page),
     'paginate': {
       'current_page': page,
       'total_pages': pages_count
