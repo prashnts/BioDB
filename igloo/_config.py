@@ -12,9 +12,10 @@ db_config = {
   'user': db_url.username,
   'host': db_url.hostname,
   'port': db_url.port,
+  'register_hstore': False,
+  'autocommit': True,
+  'autorollback': True,
 }
-
-print(db_config)
 
 module_root = os.getcwd()
 static_root = module_root + '/public'

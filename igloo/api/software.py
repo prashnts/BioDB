@@ -4,8 +4,6 @@ import math
 import peewee
 import falcon
 
-from playhouse.postgres_ext import Match
-
 from igloo.model.entities import Software
 
 
@@ -16,12 +14,12 @@ def get_list(
   if q is not None:
     items = (Software
         .select()
-        .where(Match(Software.ftsearch, q)))
-    pages_count = math.ceil(items.count() / 10)
+        .where(Software.ftsearch.match(q)))
   else:
     items = Software.select()
-    pages_count = math.ceil(Software.select().count() / 10)
+
   item_page = items.paginate(page, 10)
+  pages_count = math.ceil(items.count() / 10)
 
   return {
     'data': map(lambda x: x.repr, item_page),

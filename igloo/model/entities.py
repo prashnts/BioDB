@@ -20,14 +20,10 @@ class Software(peewee.Model):
     database = db
 
   def save(self, **kwa):
-    self.ftsearch = fn.to_tsvector('\n'.join([self.title, self.description]))
-    out = super(Software, self).save(**kwa)
-    # SoftwareSearch.insert({
-    #   SoftwareSearch.docid: self.id,
-    #   SoftwareSearch.title: self.title,
-    #   SoftwareSearch.description: self.description,
-    #   }).execute()
-    return out
+    self.ftsearch = peewee.fn.to_tsvector(
+        '\n'.join([self.title, self.description]))
+    return super(Software, self).save(**kwa)
+
 
   @property
   def repr(self):
