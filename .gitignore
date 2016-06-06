@@ -68,8 +68,5 @@ public/
 # Bower stuff.
 bower_components/
 
-# Config
-_config.py
-
 # Sqlite
 *.db
