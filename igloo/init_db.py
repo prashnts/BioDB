@@ -14,9 +14,12 @@ def populate_db():
       item.reference = row.get('Reference (journel or publication name)')
       item.save()
 
-if __name__ == '__main__':
+def main():
   db.drop_tables([Software, SoftwareSearch], safe=True)
-  db.create_tables([Software])
-  SoftwareSearch.create_table()
+  db.create_tables([Software, SoftwareSearch])
   populate_db()
   print("Done Create DB")
+  db.close()
+
+if __name__ == '__main__':
+  main()
