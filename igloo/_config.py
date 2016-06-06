@@ -1,6 +1,20 @@
 # BioDB API
 import os
+import urllib.parse
 
-db_name = 'bio.db'
+db_url = urllib.parse.urlsplit(os.environ.get(
+    'DATABASE_URL',
+    'postgres://prashantsinha:@localhost:5432/biodb'))
+
+db_config = {
+  'database': db_url.path[1:],
+  'password': db_url.password,
+  'user': db_url.username,
+  'host': db_url.hostname,
+  'port': db_url.port,
+}
+
+print(db_config)
+
 module_root = os.getcwd()
 static_root = module_root + '/public'

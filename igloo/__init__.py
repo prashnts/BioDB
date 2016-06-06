@@ -5,9 +5,9 @@ import static
 
 import igloo._config as config
 
-import playhouse.sqlite_ext
+import playhouse.postgres_ext
 
-db = playhouse.sqlite_ext.SqliteExtDatabase(config.db_name)
+db = playhouse.postgres_ext.PostgresqlExtDatabase(**config.db_config)
 
 
 @hug.get('/')

@@ -4,7 +4,9 @@ import math
 import peewee
 import falcon
 
-from igloo.model.entities import Software, SoftwareSearch
+from playhouse.postgres_ext import Match
+
+from igloo.model.entities import Software
 
 
 @hug.get('/')
@@ -14,12 +16,7 @@ def get_list(
   if q is not None:
     items = (Software
         .select()
-        .join(
-            SoftwareSearch,
-            on=(Software.id == SoftwareSearch.docid))
-        .where(SoftwareSearch.match(q))
-        .order_by(SoftwareSearch.bm25())
-      )
+        .where(Match(Software.ftsearch, q)))
     pages_count = math.ceil(items.count() / 10)
   else:
     items = Software.select()
