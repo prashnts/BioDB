@@ -6,7 +6,7 @@
   "scripts": {
     "start": "gunicorn igloo:api -b 0:8900 --reload",
     "build": "brunch b -p",
-    "postinstall": "brunch b && python -m igloo.init_db"
+    "postinstall": "brunch b && python3 -m igloo.init_db"
   },
   "author": "Prashant Sinha <prashant@ducic.ac.in>",
   "license": "MIT",
