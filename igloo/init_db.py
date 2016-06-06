@@ -19,3 +19,4 @@ if __name__ == '__main__':
   db.create_tables([Software])
   SoftwareSearch.create_table()
   populate_db()
+  print("Done Create DB")
