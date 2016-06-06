@@ -4,6 +4,8 @@ jquery = require 'jquery'
 
 ReactPaginate = require 'react-paginate'
 
+Card = require './card'
+
 
 class CardsContainer extends React.Component
   constructor: (props) ->
@@ -28,16 +30,23 @@ class CardsContainer extends React.Component
 
   renderCards: ->
     @state.events.map (dat, i) ->
-      <div key={dat.id}>
-        <p>{dat.title}</p>
-      </div>
+      <Card key={dat.id} dat={dat} />
 
   handlePaginate: (data) =>
     @fetchCards(data.selected + 1)
 
   render: ->
     <div>
-      <div className='pages'>{@renderCards()}</div>
+      <section className='search'>
+        <span>BioDB</span>
+        <div className='input-group'>
+          <input type='text' className='form-control'></input>
+          <span className='input-group-btn'>
+            <button className='btn'>Search</button>
+          </span>
+        </div>
+      </section>
+      <div className='cards'>{@renderCards()}</div>
       <ReactPaginate
         previousLabel={"previous"}
         nextLabel={"next"}

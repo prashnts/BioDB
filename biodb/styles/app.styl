@@ -1,7 +1,49 @@
 // BioDB
 @require './_mixins.styl'
 @require 'jeet'
+@require 'bootstrap'
 
+color2 = #ff5964
+bgpri = #ffffff
+bgsec = #38618c
+borde = #35a7ff
 
 html, body
   margin: 0
+
+.search
+  background bgsec
+  padding 10px
+
+.pagination
+  display flex
+  list-style none
+  position fixed
+  background bgsec
+  width 100%
+  bottom 0
+  color #FFF
+  margin 0
+  padding 5px
+  justify-content center
+
+  li
+    display block
+    cursor pointer
+    // background #7A89C1
+    a
+      // margin 0 4px
+      padding 5px 10px
+      display block
+
+    &.active, &:hover
+      background #C9666B
+
+.cards
+  center(max-width: 80%)
+  edit()
+
+.card
+  border-radius 4px
+  padding 10px
+  margin 10px

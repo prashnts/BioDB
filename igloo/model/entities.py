@@ -10,6 +10,7 @@ class Software(peewee.Model):
   description = peewee.TextField()
   url = peewee.CharField(null=True)
   license_type = peewee.CharField(null=True)
+  reference = peewee.CharField(null=True)
 
   added = peewee.DateField(default=datetime.datetime.now)
 
@@ -22,6 +23,7 @@ class Software(peewee.Model):
       'id': self.id,
       'title': self.title,
       'description': self.description,
+      'reference': self.reference,
       'url': self.url,
       'license': self.license_type,
       'added': str(self.added),
