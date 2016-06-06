@@ -1,25 +1,47 @@
 // BioDB
+@import url('https://fonts.googleapis.com/css?family=Contrail+One|Montserrat|Lora')
 @require './_mixins.styl'
 @require 'jeet'
 @require 'bootstrap'
 
-color2 = #ff5964
+
+color2 = #ffbf00
 bgpri = #ffffff
 bgsec = #38618c
 borde = #35a7ff
 
 html, body
-  margin: 0
+  margin 0
+  font-family Montserrat
+  background #DDD
+
+h1, h2, h3, h4
+  font-family Montserrat
+  margin 0 0 15px 0
 
 .search
+  padding 50px 10px
+  center(max-width: 80%)
+
+  .input-group
+    width 50%
+    margin 0 auto
+
+.brand
   background bgsec
-  padding 10px
+  text-align center
+  .logo
+    display block
+    padding 10px 0
+    font-family 'Contrail One', cursive
+    font-size 60px
+    color color2
 
 .pagination
   display flex
   list-style none
-  position fixed
-  background bgsec
+  // position fixed
+  // background bgsec
   width 100%
   bottom 0
   color #FFF
@@ -36,14 +58,14 @@ html, body
       padding 5px 10px
       display block
 
-    &.active, &:hover
-      background #C9666B
 
 .cards
   center(max-width: 80%)
-  edit()
+  // edit()
 
 .card
   border-radius 4px
   padding 10px
   margin 10px
+  border 1px solid #AAA
+  background #FFF

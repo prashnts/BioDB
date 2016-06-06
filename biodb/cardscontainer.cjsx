@@ -37,16 +37,20 @@ class CardsContainer extends React.Component
 
   render: ->
     <div>
-      <section className='search'>
-        <span>BioDB</span>
-        <div className='input-group'>
-          <input type='text' className='form-control'></input>
-          <span className='input-group-btn'>
-            <button className='btn'>Search</button>
-          </span>
+      <section className='brand'>
+        <span className='logo'>BioDB</span>
+        <div className='search'>
+          <div className='input-group'>
+            <input type='text' className='form-control'/>
+            <span className='input-group-btn'>
+              <button className='btn'>Search</button>
+            </span>
+          </div>
         </div>
       </section>
-      <div className='cards'>{@renderCards()}</div>
+      <div className='cards'>
+        {@renderCards()}
+      </div>
       <ReactPaginate
         previousLabel={"previous"}
         nextLabel={"next"}

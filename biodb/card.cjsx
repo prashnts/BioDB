@@ -11,8 +11,9 @@ class Card extends React.Component
   render: ->
     <div className='card'>
       <h3>{@title}</h3>
-      <a href={@url} target="_blank">Source</a>
       <p>{@description}</p>
+      <h5>Source and reference</h5>
+      <a href={@url} target="_blank">Source</a>
       <p>{@reference}</p>
     </div>
 
